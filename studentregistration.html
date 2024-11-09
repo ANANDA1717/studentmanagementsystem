@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body {
+            background: url("blue.jpg");
+            font-family: Arial, sans-serif;
+            background-repeat: no-repeat;
+            background-size:cover;
+        }
+
+        .container {
+            margin: 100px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 1px 1px 25px rgb(176, 213, 216);
+            padding: 20px;
+            min-width: 300px;
+        }
+        
+
+        h2 {
+            font-family: cursive;
+            color: rgb(123, 123, 200);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 80%;
+            margin-top: 10px;
+            padding: 10px;
+            padding-left: 12px;
+            word-spacing: 3px;
+            letter-spacing: 1px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: cursive;
+            border-radius: 2px;
+            border-bottom: 1px solid grey;
+            color: rgb(125, 125, 194);
+            margin-bottom: 20px;
+        }
+
+        input::placeholder {
+            color: rgb(113, 113, 174);
+            font-weight: 700;
+            font-size: 14px;
+            font-family: cursive;
+        }
+
+        input[type="submit"] {
+            background-color: rgb(77, 77, 204);
+            color: aliceblue;
+            height: 38px;
+            width: 130px;
+            margin-top: 20px;
+            margin-left: 237px;
+            border-radius: 8px;
+            font-weight: bolder;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(63, 63, 167);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-bottom: 2px solid rgb(77, 77, 204);
+            color: rgb(77, 77, 204);
+        }
+
+        .student-list {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: rgb(77, 77, 204);
+            color: white;
+        }
+
+        td {
+            background-color: aliceblue;
+        }
+
+        button {
+            background-color: rgb(240, 64, 64);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 11px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgb(204, 51, 51);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Registration Form</h2>
+
+        <form id="studentForm">
+           
+            <input type="text" id="name" placeholder="Enter your name" required>
+            
+           
+            <input type="number" id="id" placeholder="Enter your ID" required>
+
+            <input type="number" id="class" placeholder="Enter your class" required>
+            
+            
+            <input type="number" id="rollno" placeholder="Enter your roll number" required>
+
+           
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <input type="submit" value="Add Student">
+        </form>
+
+        <div class="student-list">
+            <table id="studentTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Class</th>
+                        <th>Roll No</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Student records will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Fetch stored students from local storage
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        const studentForm = document.getElementById('studentForm');
+        const studentTable = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+
+        // Function to render the student list in the table
+        function renderStudents() {
+            studentTable.innerHTML = '';
+            students.forEach((student, index) => {
+                const row = studentTable.insertRow();
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.id}</td>
+                    <td>${student.class}</td>
+                    <td>${student.rollno}</td>
+                    <td>${student.email}</td>
+                    <td>
+                        <button onclick="editStudent(${index})">Edit</button>
+                        <button onclick="deleteStudent(${index})">Delete</button>
+                    </td>
+                `;
+            });
+            // Save the student list to localStorage
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        // Add new student record
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const classVal = document.getElementById('class').value.trim();
+            const rollno = document.getElementById('rollno').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            // Input Validation
+            if (!name || !id || !classVal || !rollno || !email) {
+                alert('All fields are required!');
+                return;
+            }
+
+            if (isNaN(id) || isNaN(rollno)) {
+                alert('Student ID and Roll Number must be numbers.');
+                return;
+            }
+
+            const nameRegex = /^[A-Za-z\s]+$/;
+            if (!nameRegex.test(name)) {
+                alert('Name must contain only letters and spaces.');
+                return;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailRegex.test(email)) {
+                alert('Invalid email address.');
+                return;
+            }
+
+            const student = { name, id, class: classVal, rollno, email };
+            students.push(student);
+
+            // Clear form inputs after adding
+            studentForm.reset();
+
+            // Render updated student list
+            renderStudents();
+        });
+
+        // Edit student record
+        function editStudent(index) {
+            const student = students[index];
+            document.getElementById('name').value = student.name;
+            document.getElementById('id').value = student.id;
+            document.getElementById('class').value = student.class;
+            document.getElementById('rollno').value = student.rollno;
+            document.getElementById('email').value = student.email;
+
+            // Remove student from the array
+            deleteStudent(index);
+        }
+
+        // Delete student record
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            renderStudents();
+        }
+
+        // Initial render
+        renderStudents();
+    </script>
+</body>
+</html>
