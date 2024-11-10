@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url("blue.jpg");
+            background-size: cover;
+            display: flex;
+            justify-content: space-between;
+            height: 100vh;
+            flex-direction: row;
+        }
+
+        /* Sidebar for the form */
+        .sidebar {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 1px 1px 25px rgb(176, 213, 216);
+            margin-top: 20px;
+            border-radius: 8px;
+            animation: fadeIn 3s ease-in-out;
+            transition: max-width 2s ease-in-out;
+            flex-shrink: 1;
+        }
+
+        /* Centered Table Area */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 45px; /* Adds space from the top */
+            padding-left: 20px;
+            padding-right: 20px;
+            flex-shrink: 1;
+        }
+
+        .student-list {
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 11px;
+            flex-shrink: 1;
+            box-shadow:  1px 1px 35px rgb(157, 225, 219);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 11px;
+            flex-shrink: 1;
+            box-shadow:  1px 1px 35px rgb(157, 225, 219);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        th {
+            background-color: rgb(77, 77, 204);
+            color: white;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        button {
+            background-color: rgba(192, 108, 108, 0.845);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            margin-left: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgba(204, 115, 115, 0.845);
+        }
+
+        /* Sidebar Form */
+        h2 {
+            font-family: cursive;
+            color: rgb(95, 95, 209);
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 70%;
+            margin-top: 10px;
+            padding: 10px;
+            padding-left: 12px;
+            word-spacing: 3px;
+            letter-spacing: 1px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: cursive;
+            border-radius: 2px;
+            border-bottom: 1px solid rgb(218, 203, 203);
+            color: rgb(125, 125, 194);
+            margin-bottom: 20px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        input::placeholder {
+            color: rgb(113, 113, 174);
+            font-weight: 700;
+            font-size: 14px;
+            font-family: cursive;
+        }
+
+        input[type="submit"] {
+            background-color: rgb(77, 77, 204);
+            color: aliceblue;
+            height: 38px;
+            width: 130px;
+            margin-top: 20px;
+            margin-left: 70px;
+            border-radius: 8px;
+            font-weight: bolder;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(63, 63, 167);
+        }
+
+        /* Fade-in animation for the sidebar */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                box-shadow: 1px 1px 35px rgb(223, 230, 163);
+            }
+            50% {
+                opacity: 0.5;
+                box-shadow: 1px 1px 35px rgb(144, 197, 141);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 1px 1px 35px rgb(117, 209, 215);
+            }
+        }
+
+        /* Focus effect for input fields */
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-bottom: 2px solid rgb(77, 77, 204);
+            color: rgb(77, 77, 204);
+            width: 80%;
+        }
+
+        /* Hover effect for input fields */
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        input[type="email"]:hover {
+            outline: none;
+            border-bottom: 2px solid rgb(77, 77, 204);
+            color: rgb(77, 77, 204);
+            width: 80%;
+        }
+
+        @media (max-width: 350px) {
+            .sidebar {
+                width: 35%;
+                padding: 5px;
+                margin-top: 10px;
+            }
+        
+            .main-content {
+                margin-top: 10px;
+                flex: 1 1 100%;
+                min-width: 120px;
+                padding: 2px;
+            }
+        
+            /* Table styling */
+            table {
+                font-size: 11px; /* Further reduce font size */
+                overflow-x: auto; /* Allow horizontal scrolling if table is too wide */
+            }
+        
+            h2 {
+                font-family: cursive;
+                color: rgb(95, 95, 209);
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+            th, td {
+                padding: 2px; /* Reduce padding to fit smaller screens */
+            }
+        
+            /* Button styling for smaller devices */
+            button {
+                padding: 2px 4px;
+                font-size: 15px; /* Reduce button font size */
+            }
+        
+            /* Form inputs adjustments */
+            input[type="text"],
+            input[type="number"],
+            input[type="email"] {
+                width: 70%;
+                font-weight:bolder;
+                font-size: 8px; /* Adjust font size */
+            }
+        
+            input[type="submit"] {
+                width: 80%;
+                margin-left: 0;
+                font-size: 12px;
+            }
+            input::placeholder {
+                color: rgb(113, 113, 174);
+                font-weight: bolder;
+                font-size: 8px;
+                font-family: cursive;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 35%;
+                padding: 5px;
+                margin-top: 10px;
+            }
+        
+            .main-content {
+                margin-top: 10px;
+                flex: 1 1 100%;
+                width: 45%;
+                padding: 2px;
+            }
+        
+            /* Table styling */
+            table {
+                font-size: 15px; /* Further reduce font size */
+                overflow-x: auto; /* Allow horizontal scrolling if table is too wide */
+                font-family:cursive;
+                margin-left: 10px;
+            }
+        
+            h2 {
+                font-family: cursive;
+                color: rgb(95, 95, 209);
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+            th, td {
+                padding: 2px; /* Reduce padding to fit smaller screens */
+            }
+        
+            /* Button styling for smaller devices */
+            button {
+                padding: 2px 4px;
+                font-size: 15px; /* Reduce button font size */
+            }
+        
+            /* Form inputs adjustments */
+            input[type="text"],
+            input[type="number"],
+            input[type="email"] {
+                width: 70%;
+                font-size: 10px; /* Adjust font size */
+            }
+        
+            input[type="submit"] {
+                width: 80%;
+                margin-left: 0;
+                font-size: 12px;
+            }
+            input::placeholder {
+                color: rgb(113, 113, 174);
+                font-weight: 400;
+                font-size: 9px;
+                font-family: cursive;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar containing the form -->
+    <div class="sidebar">
+        <h2>Student Registration Form</h2>
+
+        <form id="studentForm">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="number" id="id" placeholder="Enter your ID" required>
+            <input type="number" id="class" placeholder="Enter your class" required>
+            <input type="number" id="rollno" placeholder="Enter your roll number" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="submit" value="Add Student">
+        </form>
+    </div>
+
+    <!-- Main content area where the student list table is displayed -->
+    <div class="main-content">
+        <div class="student-list">
+            <table id="studentTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Class</th>
+                        <th>Roll No</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Student records will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        const studentForm = document.getElementById('studentForm');
+        const studentTable = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+
+        function renderStudents() {
+            studentTable.innerHTML = '';
+            students.forEach((student, index) => {
+                const row = studentTable.insertRow();
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.id}</td>
+                    <td>${student.class}</td>
+                    <td>${student.rollno}</td>
+                    <td>${student.email}</td>
+                    <td>
+                        <button onclick="editStudent(${index})">Edit</button>
+                        <button onclick="deleteStudent(${index})">Delete</button>
+                    </td>
+                `;
+            });
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const classVal = document.getElementById('class').value.trim();
+            const rollno = document.getElementById('rollno').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!name || !id || !classVal || !rollno || !email) {
+                alert('All fields are required!');
+                return;
+            }
+
+            if (isNaN(id) || isNaN(rollno)) {
+                alert('Student ID and Roll Number must be numbers.');
+                return;
+            }
+
+            const student = { name, id, class: classVal, rollno, email };
+            students.push(student);
+
+            studentForm.reset();
+            renderStudents();
+        });
+
+        function editStudent(index) {
+            const student = students[index];
+            document.getElementById('name').value = student.name;
+            document.getElementById('id').value = student.id;
+            document.getElementById('class').value = student.class;
+            document.getElementById('rollno').value = student.rollno;
+            document.getElementById('email').value = student.email;
+
+            deleteStudent(index);
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            renderStudents();
+        }
+
+        renderStudents();
+    </script>
+</body>
+</html>
